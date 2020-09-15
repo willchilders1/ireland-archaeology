@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8 />
+  <title>Sites and Monuments in Northern Ireland</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <!-- Is the is the latest version of Leaflet? -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: rgb(43, 43, 43);
+      font-family: "Lato", sans-serif;
+      font-size: 100%;
+      font-weight: 300;
+      color: rgb(172, 172, 172);
+    }
+
+    header,
+    footer,
+    section {
+      padding: 6px 10%;
+      margin: 0 auto;
+      width: 80%
+    }
+
+    a {
+      color: #5262f3;
+      font-weight: normal;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* h1, h2 {
+      text-align: center;
+    } */
+    h1 {
+      display: inline-block;
+      margin-right: 20px;
+      color: rgb(190, 190, 190);
+      font-size: 3.5em;
+      font-weight: 700;
+    }
+
+    h2 {
+      display: inline-block;
+      color: rgba(255, 200, 0, 0.8);
+      letter-spacing: 0.05em;
+      margin-top: 0px;
+      font-weight: 300;
+      text-transform: uppercase;
+      border-bottom: 1px dotted rgba(255, 200, 0, 0.5);
+    }
+
+    .img-fill {
+      width: 100%;
+      height: 540px;
+      margin: 10px auto;
+    }
+
+    #map {
+      width: 100%;
+      height: 540px;
+      margin: 10px auto;
+    }
+
+    p {
+      font-size: 1em;
+      color: rgba(170, 170, 170);
+      ;
+      font-weight: 300;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Sites and Monuments in Northern Ireland</h1>
+    <h2>Archaeoligcal Points of Interest</h2>
+  </header>
+  <section>
+    <div id='map'></div>
+
+    <p>Ireland is a hotbed for archaeoligical activity. Because of the rich, continuous cultural history presented in
+      the soil archaeologists flock to the area to conduct field research.
+      Ireland is also
+    </p>
+    <img
+      src="https://www.irishcentral.com/uploads/article/127259/cropped_minister-madigan-megalithic-discovery-rolling-news.jpg?t=1585640865"
+      alt="Northern Ireland archaeological find" class="img-width"><br>
+    Denver Fire Department Engine:
+    Photo provided by Irish Central<a
+      href="https://www.irishcentral.com/roots/history/megalithic-discovery-dowth-hall">Megalith Found at Brú na
+      Bóinne</a><br>
+  </section>
+  <footer>
+    <p>Map authored by Will Childers for University of Kentucky MAP 672</p>
+    <hr>
+
+    <a href="https://newmapsplus.github.io">
+      <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-nmp-75px-h-gray.png"
+        alt="University of Kentucky Geography">
+    </a>
+
+    <a href="https://uky-gis.github.io">
+      <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-geography-75px-h.png"
+        alt="University of Kentucky Geography">
+    </a>
+  </footer>
+  <!-- Is the is the latest version of Leaflet? -->
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+  <script src="data/ireland_arch_points.js"></script>
+  <script src="data/ireland_city_map.js"></script>
+  <script>
+    // initialize leaflet map
+    var map = L.map('map', {
+      center: [54.7877, -6.4923],
+      zoom: 8,
+    });
+    // add some tiles
+    var tiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+    // shared styles
+    var commonStyles = {
+      stroke: false,
+      radius: 5,
+      fillOpacity: 1
+    }
+    // empty object to hold multiple L.geoJson layers
+    var geoJsonLayers = {};
+
+    // data model
+    var layersInfo = {
+      archLayer: {
+        source: irelandPoints,
+        color: '#dc2b28',
+        label: "Archaeological Points",
+        accessor: 'TOWNLAND',
+        accessor2: 'EDITED_TYP'
+      },
+      cityLayer: {
+        source: irelandCities,
+        color: '#dc2b28',
+        label: "Archaeological Points",
+        accessor: 'name',
+        accessor2: 'population'
+      }
+    };
+
+    // loop through the data model
+    for (var gsLayer in layersInfo) {
+
+      // create new L.geoJson layer for each
+      geoJsonLayers[gsLayer] = L.geoJson(layersInfo[gsLayer].source, {
+        pointToLayer: function (feature, latlng) {
+          return L.circleMarker(latlng, {
+            color: layersInfo[gsLayer].color
+          });
+        },
+        style: function (feature) {
+          return commonStyles;
+        },
+        onEachFeature: function (feature, layer) {
+          var tooltip = `<b>${feature.properties[layersInfo[gsLayer].accessor]}</b></br><b>Population: </b>${feature.properties[layersInfo[gsLayer].accessor2]}`;
+          layer.bindTooltip(tooltip);
+        }
+      }).addTo(map);
+    }
+
+    // when use clicks on the map
+    map.on('click', function (e) {
+
+      // loop through all the layer groups
+      for (var gsLayer in geoJsonLayers) {
+
+        // loop through all layers of each group
+        geoJsonLayers[gsLayer].eachLayer(function (layer) {
+
+          // get the distance
+          var distance = e.latlng.distanceTo(layer.getLatLng()) / 1000;
+
+          // show or hide 
+          if (distance <= 1) {
+            layer.setStyle({
+              fillOpacity: true
+            });
+          } else {
+            layer.setStyle({
+              fillOpacity: .1
+            });
+          }
+
+        });
+      }
+
+    });
+
+    // create empty object
+    var irelandLocations = {};
+
+    // loop through layerInfo
+    for (var layer in layersInfo) {
+      // build string for UI text
+      var str = `<b style='color:${layersInfo[layer].color }'>${layersInfo[layer].label}</b>`;
+      // create object property with pair
+      denverLocations[str] = geoJsonLayers[layer];
+    }
+
+    // add the layer control to the map
+    L.control.layers(null, irelandLocations, {
+      collapsed: false
+    }).addTo(map);
+  </script>
+
+</body>
+
+</html>
