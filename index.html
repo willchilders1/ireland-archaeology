@@ -13,11 +13,11 @@
     body {
       margin: 0;
       padding: 0;
-      background: rgb(43, 43, 43);
+      background: rgb(61, 61, 61);
       font-family: "Lato", sans-serif;
       font-size: 100%;
       font-weight: 300;
-      color: rgb(172, 172, 172);
+      color: rgb(165, 165, 165);
     }
 
     header,
@@ -29,7 +29,7 @@
     }
 
     a {
-      color: #5262f3;
+      color: #7e8af7;
       font-weight: normal;
       text-decoration: none;
     }
@@ -44,31 +44,36 @@
     h1 {
       display: inline-block;
       margin-right: 20px;
-      color: rgb(190, 190, 190);
+      color: rgb(165, 165, 165);
       font-size: 3.5em;
       font-weight: 700;
     }
 
     h2 {
       display: inline-block;
-      color: rgba(255, 200, 0, 0.8);
+      color: rgba(185, 121, 0, 0.8);
       letter-spacing: 0.05em;
       margin-top: 0px;
       font-weight: 300;
       text-transform: uppercase;
-      border-bottom: 1px dotted rgba(255, 200, 0, 0.5);
+      border-bottom: 1px dotted rgba(185, 121, 0, 0.8);
     }
 
     h3 {
       font-size: 2em;
       font-weight: 300;
       letter-spacing: .04em;
+      text-align: center;
     }
 
     .img-fill {
       width: 100%;
       height: auto;
       margin: 10px 0;
+    }
+
+    .footer-fill {
+      float: right;
     }
 
     #map {
@@ -79,10 +84,19 @@
 
     p {
       font-size: 1em;
-      color: rgba(170, 170, 170);
+      color: rgb(165, 165, 165);
       ;
       font-weight: 300;
       font-size: 1.2em;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin: 10px 0;
+    }
+
+    li {
+      margin: 10px 0;
     }
 
     /* Use float property to make two-column layout */
@@ -110,12 +124,6 @@
       .second-column {
         width: 100%;
       }
-    }
-
-    .leaflet-toolTip-content h3,
-    p,
-    a {
-      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     }
 
     .leaflet-toolTip-content h3 {
@@ -154,11 +162,11 @@
           one
           might be expected to find when studying in Western Europe. Many different periods are studied in and around
           Northern Ireland from the Roman Invasion to the troubles of the early 90s.</p>
-        <ul>
-          <li>See my projects on GitHub: <a href="https://github.com/willchilders1">My Github</a></li>
-          <li>Email Me: <a href="mailto:WSCH224@uky.edu">Will Childers</a></li>
-        </ul>
 
+        <ul><li>Archaeological data provided by the Department for Communities-Historic Environment Division for Northern
+          Ireland</li>
+          <li>Base map provided by Leaflet</li>
+          </ul>
         <!-- End first column -->
       </div>
 
@@ -177,18 +185,21 @@
     </div>
   </section>
   <footer>
-    <p>Map authored by Will Childers for University of Kentucky MAP 672</p>
     <hr>
+
 
     <a href="https://newmapsplus.github.io">
       <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-nmp-75px-h-gray.png"
-        alt="University of Kentucky Geography">
+        alt="University of Kentucky Geography" class="footer-fill">
     </a>
 
     <a href="https://uky-gis.github.io">
       <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-geography-75px-h.png"
-        alt="University of Kentucky Geography">
+        alt="University of Kentucky Geography" class="footer-fill">
     </a>
+    <ul>Map authored by Will Childers for University of Kentucky MAP 672</ul>
+    <ul>See my projects on GitHub: <a href="https://github.com/willchilders1">My Github</a></ul>
+    <ul>Email Me: <a href="mailto:WSCH224@uky.edu">Will Childers</a></ul>
   </footer>
   <!-- Is the is the latest version of Leaflet? -->
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
