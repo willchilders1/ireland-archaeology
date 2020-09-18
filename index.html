@@ -59,10 +59,16 @@
       border-bottom: 1px dotted rgba(255, 200, 0, 0.5);
     }
 
+    h3 {
+      font-size: 2em;
+      font-weight: 300;
+      letter-spacing: .04em;
+    }
+
     .img-fill {
       width: 100%;
-      height: 540px;
-      margin: 10px auto;
+      height: auto;
+      margin: 10px 0;
     }
 
     #map {
@@ -78,6 +84,52 @@
       font-weight: 300;
       font-size: 1.2em;
     }
+
+    /* Use float property to make two-column layout */
+    .first-column {
+      float: left;
+      width: 49%;
+      padding-right: 2%;
+    }
+
+    .second-column {
+      float: right;
+      width: 49%;
+    }
+
+    /* Clear floats after columns */
+    .row::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+
+    @media screen and (max-width: 900px) {
+
+      .first-column,
+      .second-column {
+        width: 100%;
+      }
+    }
+
+    .leaflet-toolTip-content h3 {
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      font-size: 1.3em;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .leaflet-toolTip-content p {
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      margin: 2px 0 4px;
+      font-size: 1.3em;
+      text-align: center;
+    }
+
+    .leaflet-toolTip-content a {
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      font-weight: normal;
+    }
   </style>
 </head>
 
@@ -88,18 +140,34 @@
   </header>
   <section>
     <div id='map'></div>
+    <div class="row">
+      <div class="first-column">
+        <h3>Northern Ireland</h3>
+        <p>Ireland is a hotbed for archaeoligical activity. Because of the rich, continuous cultural history presented
+          in
+          the soil archaeologists flock to the area to conduct field research.
+          Ireland is also</p>
+        <ul>
+          <li>See my projects on GitHub: <a href="https://github.com/willchilders1">My Github</a></li>
+          <li>Email Me: <a href="mailto:WSCH224@uky.edu">Will Childers</a></li>
+        </ul>
 
-    <p>Ireland is a hotbed for archaeoligical activity. Because of the rich, continuous cultural history presented in
-      the soil archaeologists flock to the area to conduct field research.
-      Ireland is also
-    </p>
-    <img
-      src="https://www.irishcentral.com/uploads/article/127259/cropped_minister-madigan-megalithic-discovery-rolling-news.jpg?t=1585640865"
-      alt="Northern Ireland archaeological find" class="img-width"><br>
-    Denver Fire Department Engine:
-    Photo provided by Irish Central<a
-      href="https://www.irishcentral.com/roots/history/megalithic-discovery-dowth-hall">Megalith Found at Brú na
-      Bóinne</a><br>
+        <!-- End first column -->
+      </div>
+
+      <!-- Start right column -->
+      <div class="second-column">
+        <img
+          src="https://www.irishcentral.com/uploads/article/127259/cropped_minister-madigan-megalithic-discovery-rolling-news.jpg?t=1585640865"
+          alt="Northern Ireland archaeological find" class="img-fill"><br>
+        Photo provided by Irish Central: <a
+          href="https://www.irishcentral.com/roots/history/megalithic-discovery-dowth-hall">Megalith Found at Brú na
+          Bóinne</a>
+      </div>
+      <!-- End right column -->
+    </div>
+    <!-- End row column -->
+    </div>
   </section>
   <footer>
     <p>Map authored by Will Childers for University of Kentucky MAP 672</p>
@@ -127,11 +195,12 @@
       zoom: 8,
     });
     // add some tiles
-    var tiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-      subdomains: 'abcd',
-      maxZoom: 19
-    }).addTo(map);
+    var tiles = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+        subdomains: 'abcd',
+        maxZoom: 19
+      }).addTo(map);
     // shared styles
     var commonStyles = {
       stroke: false,
@@ -145,7 +214,8 @@
     var layersInfo = {
       archLayer: {
         source: irelandPoints3,
-        color: '#848482',
+        color: '#ffaa33',
+        icon: 'data/Map_symbol_archaeology.svg',
         label: "Archaeological Sites and Monuments",
         accessor: 'TOWNLAND',
         accessor2: 'EDITED_TYP'
@@ -153,6 +223,7 @@
       cityLayer: {
         source: irelandCities,
         color: '#dc2b28',
+        fillOpacity: .8,
         label: "Cities and Counties",
         accessor: 'name',
         accessor2: 'population'
@@ -160,6 +231,7 @@
       polyLayer: {
         source: irelandPoints2,
         color: '#3388ff',
+        fillOpacity: .8,
         label: "Archaeological Site Polygons",
         accessor: 'TOWNLAND',
         accessor2: 'EDITED_TYP'
@@ -172,16 +244,30 @@
       // create new L.geoJson layer for each
       geoJsonLayers[gsLayer] = L.geoJson(layersInfo[gsLayer].source, {
         pointToLayer: function (feature, latlng) {
+          var icon = L.icon({
+            iconUrl: layersInfo[gsLayer].icon,
+            iconSize: [40, 40],
+            popupAnchor: [0, -22],
+            className: "icon"
+          });
+          // if (layersInfo[gsLayer].source != irelandPoints3){
           return L.circleMarker(latlng, {
             color: layersInfo[gsLayer].color,
-            fillColor: layersInfo[gsLayer].fillColor
-          });
+            fillOpacity: layersInfo[gsLayer].fillOpacity
+          })
+          // }
+          //   else{
+          //     return L.marker(layersInfo[gsLayer].icon, {
+          //   icon: icon
+          // })
+          //   }
         },
         style: function (feature) {
           return commonStyles;
         },
         onEachFeature: function (feature, layer) {
-          var tooltip = `<b>${feature.properties[layersInfo[gsLayer].accessor]}</b></br>${feature.properties[layersInfo[gsLayer].accessor2]}`;
+          var tooltip =
+            `<b>${feature.properties[layersInfo[gsLayer].accessor]}</b></br>${feature.properties[layersInfo[gsLayer].accessor2]}`;
           layer.bindTooltip(tooltip);
         }
       }).addTo(map);
