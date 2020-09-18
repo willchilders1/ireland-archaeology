@@ -118,6 +118,7 @@
   <!-- Is the is the latest version of Leaflet? -->
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
   <script src="data/ireland_arch_points3.js"></script>
+  <script src="data/ireland_arch_points2.js"></script>
   <script src="data/ireland_city_map.js"></script>
   <script>
     // initialize leaflet map
@@ -144,18 +145,24 @@
     var layersInfo = {
       archLayer: {
         source: irelandPoints3,
-        color: '#28dc70',
-        label: "Archaeological Points",
+        color: '#848482',
+        label: "Archaeological Sites and Monuments",
         accessor: 'TOWNLAND',
         accessor2: 'EDITED_TYP'
       },
       cityLayer: {
         source: irelandCities,
         color: '#dc2b28',
-        fillColor: '',
         label: "Cities and Counties",
         accessor: 'name',
         accessor2: 'population'
+      },
+      polyLayer: {
+        source: irelandPoints2,
+        color: '#3388ff',
+        label: "Archaeological Site Polygons",
+        accessor: 'TOWNLAND',
+        accessor2: 'EDITED_TYP'
       }
     };
 
@@ -167,6 +174,7 @@
         pointToLayer: function (feature, latlng) {
           return L.circleMarker(latlng, {
             color: layersInfo[gsLayer].color,
+            fillColor: layersInfo[gsLayer].fillColor
           });
         },
         style: function (feature) {
