@@ -117,7 +117,7 @@
   </footer>
   <!-- Is the is the latest version of Leaflet? -->
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
-  <script src="data/ireland_arch_points.js"></script>
+  <script src="data/ireland_arch_points3.js"></script>
   <script src="data/ireland_city_map.js"></script>
   <script>
     // initialize leaflet map
@@ -143,8 +143,8 @@
     // data model
     var layersInfo = {
       archLayer: {
-        source: irelandPoints,
-        color: '#dc2b28',
+        source: irelandPoints3,
+        color: '#28dc70',
         label: "Archaeological Points",
         accessor: 'TOWNLAND',
         accessor2: 'EDITED_TYP'
@@ -152,7 +152,8 @@
       cityLayer: {
         source: irelandCities,
         color: '#dc2b28',
-        label: "Archaeological Points",
+        fillColor: '',
+        label: "Cities and Counties",
         accessor: 'name',
         accessor2: 'population'
       }
@@ -165,14 +166,14 @@
       geoJsonLayers[gsLayer] = L.geoJson(layersInfo[gsLayer].source, {
         pointToLayer: function (feature, latlng) {
           return L.circleMarker(latlng, {
-            color: layersInfo[gsLayer].color
+            color: layersInfo[gsLayer].color,
           });
         },
         style: function (feature) {
           return commonStyles;
         },
         onEachFeature: function (feature, layer) {
-          var tooltip = `<b>${feature.properties[layersInfo[gsLayer].accessor]}</b></br><b>Population: </b>${feature.properties[layersInfo[gsLayer].accessor2]}`;
+          var tooltip = `<b>${feature.properties[layersInfo[gsLayer].accessor]}</b></br>${feature.properties[layersInfo[gsLayer].accessor2]}`;
           layer.bindTooltip(tooltip);
         }
       }).addTo(map);
@@ -191,9 +192,9 @@
           var distance = e.latlng.distanceTo(layer.getLatLng()) / 1000;
 
           // show or hide 
-          if (distance <= 1) {
+          if (distance <= 10) {
             layer.setStyle({
-              fillOpacity: true
+              fillOpacity: .8
             });
           } else {
             layer.setStyle({
@@ -214,7 +215,7 @@
       // build string for UI text
       var str = `<b style='color:${layersInfo[layer].color }'>${layersInfo[layer].label}</b>`;
       // create object property with pair
-      denverLocations[str] = geoJsonLayers[layer];
+      irelandLocations[str] = geoJsonLayers[layer];
     }
 
     // add the layer control to the map
