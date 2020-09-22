@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8 />
+  <title>Sites and Monuments in Northern Ireland</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <!-- Is the is the latest version of Leaflet? -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: rgb(61, 61, 61);
+      font-family: "Lato", sans-serif;
+      font-size: 100%;
+      font-weight: 300;
+      color: rgb(165, 165, 165);
+    }
+
+    header,
+    footer,
+    section {
+      padding: 6px 10%;
+      margin: 0 auto;
+      width: 80%
+    }
+
+    a {
+      color: #7e8af7;
+      font-weight: normal;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* h1, h2 {
+      text-align: center;
+    } */
+    h1 {
+      display: inline-block;
+      margin-right: 20px;
+      color: rgb(165, 165, 165);
+      font-size: 3.5em;
+      font-weight: 700;
+    }
+
+    h2 {
+      display: inline-block;
+      color: rgba(185, 121, 0, 0.8);
+      letter-spacing: 0.05em;
+      margin-top: 0px;
+      font-weight: 300;
+      text-transform: uppercase;
+      border-bottom: 1px dotted rgba(185, 121, 0, 0.8);
+    }
+
+    h3 {
+      font-size: 2em;
+      font-weight: 300;
+      letter-spacing: .04em;
+      text-align: center;
+    }
+
+    h4 {
+      display: inline-block;
+      font-size: 1.3em;
+      font-weight: 300;
+      letter-spacing: .04em;
+      margin-bottom: 0px;
+      border-bottom: 1px double rgba(194, 194, 194, 0.8);
+    }
+
+    .img-fill {
+      width: 100%;
+      height: auto;
+      margin: 10px 0;
+    }
+
+    .footer-fill {
+      float: right;
+    }
+
+    #map {
+      width: 100%;
+      height: 540px;
+      margin: 10px auto;
+    }
+
+    p {
+      color: rgb(165, 165, 165);
+      ;
+      font-weight: 300;
+      font-size: 1.2em;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin: 10px 0;
+    }
+
+    li {
+      margin: 10px 0;
+    }
+
+    /* Use float property to make two-column layout */
+    .first-column {
+      float: left;
+      width: 49%;
+      padding-right: 2%;
+    }
+
+    .second-column {
+      float: right;
+      width: 49%;
+    }
+
+    /* Clear floats after columns */
+    .row::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+
+    @media screen and (max-width: 900px) {
+
+      .first-column,
+      .second-column {
+        width: 100%;
+      }
+    }
+
+    .leaflet-toolTip-content h3 {
+      font-size: 1.3em;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .leaflet-toolTip-content p {
+      margin: 2px 0 4px;
+      font-size: 1.3em;
+      text-align: center;
+    }
+
+    .leaflet-toolTip-content a {
+      font-weight: normal;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Sites and Monuments in Northern Ireland</h1>
+    <h2>Archaeological Points of Interest</h2>
+  </header>
+  <section>
+    <div id='map'></div>
+    <div class="row">
+      <div class="first-column">
+        <h3>Northern Ireland</h3>
+        <p>Ireland is a hotbed for archaeoligical activity. Because of the rich, continuous cultural history presented
+          in the soil archaeologists flock to the area to conduct field research.
+          Ireland is also one of the preeminent areas wherein field schools are conducted. The rich and many-times
+          undisturbed
+          monuments are a great place for budding archaeologists to learn the ins and outs of excavation and the things
+          one
+          might be expected to find when studying in Western Europe. Many different periods are studied in and around
+          Northern Ireland from the Roman Invasion to the troubles of the early 90s.</p>
+        <img src="https://ichef.bbci.co.uk/news/624/cpsprodpb/92AD/production/_109194573_tannery.png"
+          alt="Northern Ireland archaeological find" class="img-fill"><br>
+        Photo provided by BBC: <a href="https://www.bbc.com/news/uk-northern-ireland-50015582">Tanning pits in Belfast
+          city centre
+        </a></br>
+        <ul>
+          <h4>Resources</h4>
+          <li>Archaeological data provided by the Department for Communities-Historic Environment Division for Northern
+            Ireland</li>
+          <li>Base map provided by Leaflet</li>
+          <li>Map authored by Will Childers for University of Kentucky MAP 672</li>
+        </ul><!-- End first column -->
+      </div>
+
+      <!-- Start right column -->
+      <div class="second-column">
+        <img
+          src="https://ichef.bbci.co.uk/news/624/cpsprodpb/F077/production/_109195516_4cfd77ff-d114-4671-86fd-0ec45a28e539.png"
+          alt="Northern Ireland archaeological find" class="img-fill"><br>
+        Photo provided by BBC: <a href="https://www.bbc.com/news/uk-northern-ireland-50015582">Neolithic house at
+          Dungiven
+        </a></br>
+        <img src="https://ichef.bbci.co.uk/news/624/cpsprodpb/15A0D/production/_109198588_capture.jpg"
+          alt="Northern Ireland archaeological find" class="img-fill"><br>
+        Photo provided by BBC: <a href="https://www.bbc.com/news/uk-northern-ireland-50015582">Bronze Age roundhouse at
+          Rasharkin
+
+        </a>
+      </div>
+      <!-- End right column -->
+    </div>
+    <!-- End row column -->
+    </div>
+  </section>
+  <footer>
+    <hr>
+
+
+    <a href="https://newmapsplus.github.io">
+      <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-nmp-75px-h-gray.png"
+        alt="University of Kentucky Geography" class="footer-fill">
+    </a>
+
+    <a href="https://uky-gis.github.io">
+      <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-geography-75px-h.png"
+        alt="University of Kentucky Geography" class="footer-fill">
+    </a>
+    <ul>
+      <ul>GitHub: <a href="https://github.com/willchilders1">My Github</a></ul>
+      <ul>Email: <a href="mailto:WSCH224@uky.edu">Will Childers</a></ul>
+    </ul>
+  </footer>
+  <!-- Is the is the latest version of Leaflet? -->
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+  <script src="data/ireland_arch_points3.js"></script>
+  <script src="data/ireland_arch_points2.js"></script>
+  <script src="data/ireland_city_map.js"></script>
+  <script>
+    // initialize leaflet map
+    var map = L.map('map', {
+      center: [54.7877, -6.4923],
+      zoom: 8,
+    });
+
+    var markers = L.markerClusterGroup();
+    
+    // add some tiles
+    var tiles = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+        subdomains: 'abcd',
+        maxZoom: 19
+      }).addTo(map);
+    // shared styles
+    // empty object to hold multiple L.geoJson layers
+    var geoJsonLayers = {};
+
+    // data model
+    var layersInfo = {
+      archLayer: {
+        source: irelandPoints3,
+        accessor3: 'SMNO',
+        color: '#a9a9a9',
+        fillColor: '#ffaa33',
+        opacity: 1,
+        fillOpacity: .6,
+        // icon: 'data/Map_symbol_archaeology.svg',
+        label: "Archaeological Sites and Monuments",
+        accessor: 'TOWNLAND',
+        accessor2: 'EDITED_TYP',
+        weight: 1,
+        area2: 'area_sq_m'
+      },
+      cityLayer: {
+        source: irelandCities,
+        color: '#a9a9a9',
+        fillColor: '#dc2b28',
+        opacity: 1,
+        fillOpacity: .8,
+        label: "Cities and Counties",
+        accessor: 'name',
+        accessor2: 'population',
+        weight: 1,
+
+        // area2: 5
+      },
+      polyLayer: {
+        source: irelandPoints2,
+        color: '#a9a9a9',
+        fillColor: '#3388ff',
+        opacity: 1,
+        fillOpacity: .4,
+        label: "Archaeological Site Polygons",
+        accessor: 'TOWNLAND',
+        accessor2: 'EDITED_TYP',
+        weight: .5
+        // area2: 5
+      }
+    };
+    var commonStyles = {
+      // radius: getRadius(area2)
+      radius: 6
+    }
+
+    // loop through the data model
+    // for (var gsLayer in layersInfo) {
+
+    //   // create new L.geoJson layer for each
+    //   geoJsonLayers[gsLayer] = L.geoJson(layersInfo[gsLayer].source, {
+        
+    //     pointToLayer: function (feature, latlng) {
+    //       if (layersInfo[gsLayer].source != irelandPoints2){
+    //         return L.circleMarker(latlng, {
+    //         color: layersInfo[gsLayer].color,
+    //         fillColor: layersInfo[gsLayer].fillColor,
+    //         opacity: layersInfo[gsLayer].opacity,
+    //         fillOpacity: layersInfo[gsLayer].fillOpacity,
+    //         weight: layersInfo[gsLayer].weight
+    //       })
+    //       }
+    //     }
+        
+    //   })//.addTo(map);
+    // }
+
+    var polyLayer = L.geoJson(irelandPoints2, {
+
+     style: function(feature) {
+        return  {
+          //style
+        }
+      },
+      onEachFeature: function (feature, layer) {
+        // make popup
+      }
+
+    })
+
+
+    var archLayer = L.geoJson(irelandPoints3, {
+
+      pointToLayer: function(feature, latlng) {
+        return L.circleMarker(latlng, {
+          color: '#a9a9a9',
+          fillColor: '#ffaa33',
+          opacity: 1,
+          fillOpacity: .6
+          // radius: getRadius(feature.properties.area)
+        })
+      },
+      onEachFeature: function (feature, layer) {
+        // make popup
+      }
+
+    })
+
+    markers.addLayer(archLayer);
+    map.addLayer(markers);
+
+    var cityLayer = L.geoJson(irelandCities, {
+
+      pointToLayer: function(feature, latlng) {
+        return L.circleMarker(latlng, {
+          // style
+        })
+      },
+      onEachFeature: function (feature, layer) {
+        // make popup
+      }
+    })
+
+    var geoJsonLayers = {
+      'polyLayer': polyLayer,
+      'archLayer': archLayer,
+      'cityLayer': cityLayer
+      };
+
+    // when use clicks on the map
+    // map.on('click', function (e) {
+
+    //   // loop through all the layer groups
+    //   for (var gsLayer in geoJsonLayers) {
+
+    //     // loop through all layers of each group
+    //     geoJsonLayers[gsLayer].eachLayer(function (layer) {
+
+    //       // get the distance
+    //       var distance = e.latlng.distanceTo(layer.getLatLng()) / 1000;
+
+    //       // show or hide 
+    //       if (distance <= 10) {
+    //         layer.setStyle({
+    //           fillOpacity: .8
+    //         });
+    //       } else {
+    //         layer.setStyle({
+    //           fillOpacity: .1
+    //         });
+    //       }
+
+    //     });
+    //   }
+
+    // });
+
+    // create empty object
+    var irelandLocations = {};
+
+    // loop through layerInfo
+    for (var layer in layersInfo) {
+      // build string for UI text
+      var str = `<b style='color:${layersInfo[layer].fillColor }'style='fillColor:${layersInfo[layer].fillColor}'>${layersInfo[layer].label}</b>`;
+      // create object property with pair
+      irelandLocations[str] = geoJsonLayers[layer];
+    }
+
+    // add the layer control to the map
+    L.control.layers(null, irelandLocations, {
+      collapsed: false
+    }).addTo(map);
+
+    function getRadius(area) {
+      var radius = Math.sqrt(area / Math.PI);
+      return radius * .6;
+    }
+  </script>
+
+</body>
+
+</html>
