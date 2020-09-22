@@ -72,7 +72,7 @@
       font-weight: 300;
       letter-spacing: .04em;
       margin-bottom: 0px;
-      border-bottom :1px double rgba(194, 194, 194, 0.8);
+      border-bottom: 1px double rgba(194, 194, 194, 0.8);
     }
 
     .img-fill {
@@ -224,7 +224,7 @@
   </footer>
   <!-- Is the is the latest version of Leaflet? -->
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
-  <script src="data/ireland_arch_points3.js"></script>
+  <script src="data/ireland_arch_points4.js"></script>
   <script src="data/ireland_arch_points2.js"></script>
   <script src="data/ireland_city_map.js"></script>
   <script>
@@ -241,41 +241,55 @@
         maxZoom: 19
       }).addTo(map);
     // shared styles
-    var commonStyles = {
-      stroke: false,
-      radius: 5,
-      fillOpacity: 1
-    }
     // empty object to hold multiple L.geoJson layers
     var geoJsonLayers = {};
 
     // data model
     var layersInfo = {
-      archLayer: {
-        source: irelandPoints3,
-        color: '#ffaa33',
-        icon: 'data/Map_symbol_archaeology.svg',
-        label: "Archaeological Sites and Monuments",
-        accessor: 'TOWNLAND',
-        accessor2: 'EDITED_TYP'
-      },
+      // archLayer: {
+      //   source: irelandPoints4,
+      //   accessor3: 'SMNO'
+      //   // color: '#a9a9a9',
+      //   // fillColor: '#ffaa33',
+      //   // opacity: 1,
+      //   // fillOpacity: .6,
+      //   // // icon: 'data/Map_symbol_archaeology.svg',
+      //   // label: "Archaeological Sites and Monuments",
+      //   // accessor: 'TOWNLAND',
+      //   // accessor2: 'EDITED_TYP',
+      //   // weight: 1
+      //   // area2: 'area_sq_m'
+      // },
       cityLayer: {
         source: irelandCities,
-        color: '#dc2b28',
+        color: '#a9a9a9',
+        fillColor: '#dc2b28',
+        opacity: 1,
         fillOpacity: .8,
         label: "Cities and Counties",
         accessor: 'name',
-        accessor2: 'population'
+        accessor2: 'population',
+        weight: 1,
+
+        // area2: 5
       },
       polyLayer: {
         source: irelandPoints2,
-        color: '#3388ff',
-        fillOpacity: .8,
+        color: '#a9a9a9',
+        fillColor: '#3388ff',
+        opacity: 1,
+        fillOpacity: .4,
         label: "Archaeological Site Polygons",
         accessor: 'TOWNLAND',
-        accessor2: 'EDITED_TYP'
+        accessor2: 'EDITED_TYP',
+        weight: .5
+        // area2: 5
       }
     };
+    var commonStyles = {
+      // radius: getRadius(area2)
+      radius: 6
+    }
 
     // loop through the data model
     for (var gsLayer in layersInfo) {
@@ -283,16 +297,19 @@
       // create new L.geoJson layer for each
       geoJsonLayers[gsLayer] = L.geoJson(layersInfo[gsLayer].source, {
         pointToLayer: function (feature, latlng) {
-          var icon = L.icon({
-            iconUrl: layersInfo[gsLayer].icon,
-            iconSize: [40, 40],
-            popupAnchor: [0, -22],
-            className: "icon"
-          });
+          // var icon = L.icon({
+          //   iconUrl: layersInfo[gsLayer].icon,
+          //   iconSize: [40, 40],
+          //   popupAnchor: [0, -22],
+          //   className: "icon"
+          // });
           // if (layersInfo[gsLayer].source != irelandPoints3){
           return L.circleMarker(latlng, {
             color: layersInfo[gsLayer].color,
-            fillOpacity: layersInfo[gsLayer].fillOpacity
+            fillColor: layersInfo[gsLayer].fillColor,
+            opacity: layersInfo[gsLayer].opacity,
+            fillOpacity: layersInfo[gsLayer].fillOpacity,
+            weight: layersInfo[gsLayer].weight
           })
           // }
           //   else{
@@ -346,7 +363,7 @@
     // loop through layerInfo
     for (var layer in layersInfo) {
       // build string for UI text
-      var str = `<b style='color:${layersInfo[layer].color }'>${layersInfo[layer].label}</b>`;
+      var str = `<b style='color:${layersInfo[layer].fillColor }'style='fillColor:${layersInfo[layer].fillColor}'>${layersInfo[layer].label}</b>`;
       // create object property with pair
       irelandLocations[str] = geoJsonLayers[layer];
     }
@@ -355,6 +372,11 @@
     L.control.layers(null, irelandLocations, {
       collapsed: false
     }).addTo(map);
+
+    function getRadius(area) {
+      var radius = Math.sqrt(area / Math.PI);
+      return radius * .6;
+    }
   </script>
 
 </body>
