@@ -162,7 +162,7 @@
     <div class="row">
       <div class="first-column">
         <h3>Northern Ireland</h3>
-        <p>Ireland is a hotbed for archaeoligical activity. Because of the rich, continuous cultural history presented
+        <p>Northern Ireland is a hotbed for archaeological activity. Because of the rich, continuous cultural history presented
           in the soil archaeologists flock to the area to conduct field research.
           Ireland is also one of the preeminent areas wherein field schools are conducted. The rich and many-times
           undisturbed
@@ -260,19 +260,6 @@
       //   // weight: 1
       //   // area2: 'area_sq_m'
       // },
-      cityLayer: {
-        source: irelandCities,
-        color: '#a9a9a9',
-        fillColor: '#dc2b28',
-        opacity: 1,
-        fillOpacity: .8,
-        label: "Cities and Counties",
-        accessor: 'name',
-        accessor2: 'population',
-        weight: 1,
-
-        // area2: 5
-      },
       polyLayer: {
         source: irelandPoints2,
         color: '#a9a9a9',
@@ -284,7 +271,20 @@
         accessor2: 'EDITED_TYP',
         weight: .5
         // area2: 5
+      },
+      cityLayer: {
+        source: irelandCities,
+        color: '#a9a9a9',
+        fillColor: '#dc2b28',
+        opacity: 1,
+        fillOpacity: .8,
+        label: "Cities and Counties",
+        accessor: 'name',
+        accessor2: 'population',
+        weight: 1,
+          //Here I would just like to add the 'SMNO' attribute to the popup so that people can access similarly catalogued 
       }
+
     };
     var commonStyles = {
       // radius: getRadius(area2)
