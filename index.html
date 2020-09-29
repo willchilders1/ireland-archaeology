@@ -338,27 +338,31 @@
     map.on('click', function (e) {
 
       // loop through all the layer groups
-      for (var gsLayer in geoJsonLayers) {
+      // for (var gsLayer in geoJsonLayers) {
 
         // loop through all layers of each group
-        geoJsonLayers[gsLayer].eachLayer(function (layer) {
+        geoJsonLayers["polyLayer"].eachLayer(function (layer) {
 
           // get the distance
-          var distance = e.latlng.distanceTo(layer.getLatLng()) / 1000;
+          
+          var distance = e.latlng.distanceTo(layer.getLatLngs()[0][0][0]) / 1000;
 
           // show or hide 
           if (distance <= 10) {
+            console.log(layer.getLatLngs(), distance)
             layer.setStyle({
-              fillOpacity: .8
+              fillOpacity: .4,
+              opacity: 0.8
             });
           } else {
             layer.setStyle({
-              fillOpacity: .1
+              fillOpacity: .1,
+              opacity: .1
             });
           }
 
         });
-      }
+      // }
 
     });
 
