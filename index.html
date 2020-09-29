@@ -261,7 +261,7 @@
       //   // area2: 'area_sq_m'
       // },
       polyLayer: {
-        source: irelandPoints2,
+        source: irelandPoints4,
         color: '#a9a9a9',
         fillColor: '#3388ff',
         opacity: 1,
@@ -269,6 +269,7 @@
         label: "Archaeological Site Polygons",
         accessor: 'TOWNLAND',
         accessor2: 'EDITED_TYP',
+        attribute3: 'SMNO',
         weight: .5
         // area2: 5
       },
@@ -322,8 +323,12 @@
           return commonStyles;
         },
         onEachFeature: function (feature, layer) {
-          var tooltip =
-            `<b>${feature.properties[layersInfo[gsLayer].accessor]}</b></br>${feature.properties[layersInfo[gsLayer].accessor2]}`;
+          console.log(feature.properties)
+          var tooltip = `<b>${feature.properties[layersInfo[gsLayer].accessor]}</b>
+            </br>${feature.properties[layersInfo[gsLayer].accessor2]}`;
+          if (feature.properties[layersInfo[gsLayer].attribute3]) {
+            tooltip += `<br>SMNO: ${feature.properties[layersInfo[gsLayer].attribute3]}`
+          }
           layer.bindTooltip(tooltip);
         }
       }).addTo(map);
@@ -333,27 +338,31 @@
     map.on('click', function (e) {
 
       // loop through all the layer groups
-      for (var gsLayer in geoJsonLayers) {
+      // for (var gsLayer in geoJsonLayers) {
 
         // loop through all layers of each group
-        geoJsonLayers[gsLayer].eachLayer(function (layer) {
+        geoJsonLayers["polyLayer"].eachLayer(function (layer) {
 
           // get the distance
-          var distance = e.latlng.distanceTo(layer.getLatLng()) / 1000;
+          
+          var distance = e.latlng.distanceTo(layer.getLatLngs()[0][0][0]) / 1000;
 
           // show or hide 
           if (distance <= 10) {
+            console.log(layer.getLatLngs(), distance)
             layer.setStyle({
-              fillOpacity: .8
+              fillOpacity: .4,
+              opacity: 0.8
             });
           } else {
             layer.setStyle({
-              fillOpacity: .1
+              fillOpacity: .1,
+              opacity: .1
             });
           }
 
         });
-      }
+      // }
 
     });
 
