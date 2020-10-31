@@ -8,7 +8,7 @@ var irelandCities = {
       "marker-symbol": "",
       "name": "Belfast",
       "population": "280,211",
-      "country": 'Britain'
+      "county": 'Country Antrim, County Down'
     },
     "geometry": {
       "type": "Point",
@@ -22,7 +22,7 @@ var irelandCities = {
       "marker-symbol": "",
       "name": "Derry",
       "population": "24,129",
-      "country": 'Britain'
+      "county": 'County Londonderry'
     },
     "geometry": {
       "type": "Point",
@@ -36,7 +36,7 @@ var irelandCities = {
       "marker-symbol": "",
       "name": "Lisburn",
       "population": "45,370",
-      "country": 'Britain'
+      "county": 'Country Antrim, County Down'
     },
     "geometry": {
       "type": "Point",
@@ -50,7 +50,7 @@ var irelandCities = {
       "marker-symbol": "",
       "name": "Omagh",
       "population": "19,659",
-      "country": 'Britain'
+      "county": 'County Tyrone'
     },
     "geometry": {
       "type": "Point",
@@ -64,7 +64,7 @@ var irelandCities = {
       "marker-symbol": "",
       "name": "Armagh",
       "population": "174,792",
-      "country": 'Britain'
+      "county": 'County Armagh'
     },
     "geometry": {
       "type": "Point",
@@ -78,7 +78,7 @@ var irelandCities = {
       "marker-symbol": "",
       "name": "Coleraine",
       "population": "24,089",
-      "country": 'Britain'
+      "county": 'County Londonderry'
     },
     "geometry": {
       "type": "Point",
