@@ -7,7 +7,8 @@ var irelandCities = {
       "marker-size": "medium",
       "marker-symbol": "",
       "name": "Belfast",
-      "population": "280,211"
+      "population": "280,211",
+      "country": 'Britain'
     },
     "geometry": {
       "type": "Point",
@@ -20,7 +21,8 @@ var irelandCities = {
       "marker-size": "medium",
       "marker-symbol": "",
       "name": "Derry",
-      "population": "24,129"
+      "population": "24,129",
+      "country": 'Britain'
     },
     "geometry": {
       "type": "Point",
@@ -33,7 +35,8 @@ var irelandCities = {
       "marker-size": "medium",
       "marker-symbol": "",
       "name": "Lisburn",
-      "population": "45,370"
+      "population": "45,370",
+      "country": 'Britain'
     },
     "geometry": {
       "type": "Point",
@@ -46,7 +49,8 @@ var irelandCities = {
       "marker-size": "medium",
       "marker-symbol": "",
       "name": "Omagh",
-      "population": "19,659"
+      "population": "19,659",
+      "country": 'Britain'
     },
     "geometry": {
       "type": "Point",
@@ -59,7 +63,8 @@ var irelandCities = {
       "marker-size": "medium",
       "marker-symbol": "",
       "name": "Armagh",
-      "population": "174,792"
+      "population": "174,792",
+      "country": 'Britain'
     },
     "geometry": {
       "type": "Point",
@@ -72,7 +77,8 @@ var irelandCities = {
       "marker-size": "medium",
       "marker-symbol": "",
       "name": "Coleraine",
-      "population": "24,089"
+      "population": "24,089",
+      "country": 'Britain'
     },
     "geometry": {
       "type": "Point",

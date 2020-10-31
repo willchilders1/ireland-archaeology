@@ -162,9 +162,11 @@
     <div class="row">
       <div class="first-column">
         <h3>Northern Ireland</h3>
-        <p>Northern Ireland is a hotbed for archaeological activity. Because of the rich, continuous cultural history presented
+        <p>Northern Ireland is a hotbed for archaeological activity. Because of the rich, continuous cultural history
+          presented
           in the soil archaeologists flock to the area to conduct field research.
-          Northern Ireland is also one of the preeminent areas wherein field schools are conducted. The rich and many-times
+          Northern Ireland is also one of the preeminent areas wherein field schools are conducted. The rich and
+          many-times
           undisturbed
           monuments are a great place for budding archaeologists to learn the ins and outs of excavation and the things
           one
@@ -177,6 +179,9 @@
         </a></br>
         <ul>
           <h4>Resources</h4>
+          <li>SMNO Search Engine from United Kingdom Department for Communities: <a href="https://apps.communities-ni.gov.uk/NISMR-PUBLIC/Default.aspx">Northern Ireland Sites and Monuments Record
+            city centre
+          </a></li>
           <li>Archaeological data provided by the Department for Communities-Historic Environment Division for Northern
             Ireland</li>
           <li>Base map provided by Leaflet</li>
@@ -226,6 +231,7 @@
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
   <script src="data/ireland_arch_points4.js"></script>
   <script src="data/ireland_arch_points2.js"></script>
+  <script src="data/ireland_arch_points.js"></script>
   <script src="data/ireland_city_map.js"></script>
   <script>
     // initialize leaflet map
@@ -261,7 +267,7 @@
       //   // area2: 'area_sq_m'
       // },
       polyLayer: {
-        source: irelandPoints2,
+        source: irelandPoints,
         color: '#a9a9a9',
         fillColor: '#3388ff',
         opacity: 1,
@@ -269,6 +275,7 @@
         label: "Archaeological Site Polygons",
         accessor: 'TOWNLAND',
         accessor2: 'EDITED_TYP',
+        accessor3: 'SMNO',
         weight: .5
         // area2: 5
       },
@@ -281,8 +288,9 @@
         label: "Cities and Counties",
         accessor: 'name',
         accessor2: 'population',
+        accessor3: 'country',
         weight: 1,
-          //Here I would just like to add the 'SMNO' attribute to the popup so that people can access similarly catalogued 
+        //Here I would just like to add the 'SMNO' attribute to the popup so that people can access similarly catalogued 
       }
 
     };
@@ -323,7 +331,7 @@
         },
         onEachFeature: function (feature, layer) {
           var tooltip =
-            `<b>${feature.properties[layersInfo[gsLayer].accessor]}</b></br>${feature.properties[layersInfo[gsLayer].accessor2]}`;
+            `<b>${feature.properties[layersInfo[gsLayer].accessor]}</b></br>${feature.properties[layersInfo[gsLayer].accessor2]}</br>${feature.properties[layersInfo[gsLayer].accessor3]}`;
           layer.bindTooltip(tooltip);
         }
       }).addTo(map);
@@ -363,7 +371,8 @@
     // loop through layerInfo
     for (var layer in layersInfo) {
       // build string for UI text
-      var str = `<b style='color:${layersInfo[layer].fillColor }'style='fillColor:${layersInfo[layer].fillColor}'>${layersInfo[layer].label}</b>`;
+      var str =
+        `<b style='color:${layersInfo[layer].fillColor }'style='fillColor:${layersInfo[layer].fillColor}'>${layersInfo[layer].label}</b>`;
       // create object property with pair
       irelandLocations[str] = geoJsonLayers[layer];
     }
